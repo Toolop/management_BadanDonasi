@@ -50,6 +50,8 @@ class login_amal:
                     login_amal.id_company = temp[0]
                     if nilai : 
                          self.dashboard()
+                else : 
+                    messagebox.showwarning("warning","password salah")
             else :
                 messagebox.showwarning("warning","username tidak ada")
 
@@ -80,6 +82,8 @@ class login_donatur(login_amal):
                     login_donatur.id_donatur = temp[0]
                     if nilai :  
                          self.Donasi()
+                else : 
+                    messagebox.showwarning("warning","password salah")
             else :
                 messagebox.showwarning("warning","username tidak ada")
 

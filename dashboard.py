@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from pandas import DataFrame
 from conector import DatabaseDiagram as dbDiagram
 import datetime
+from conector import DatabaseBadan_amal as dbBadanamal
+
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
   
@@ -15,11 +17,12 @@ class Dashboard:
         self.window.title("Kartika Bisa")
         self.window.resizable (False,False)
         self.id_comp = id_comp
+        self.nama = dbBadanamal.getnama(self.id_comp)
         self.tampilan()
         
 
     def tampilan(self):
-        title=Label(self.window,text = "Donasi Kartika",font=("times new roman",40,"bold"),bg = "#010c48",fg = "white").place(x = 0, y = 0,relwidth = 1,height = 70)
+        title=Label(self.window,text = self.nama,font=("times new roman",40,"bold"),bg = "#010c48",fg = "white").place(x = 0, y = 0,relwidth = 1,height = 70)
         btn_logout=Button(self.window,text="Logout",command=self.exit,font = ("times new roman",15,"bold"),bg="yellow",cursor="hand2").place(x=1700,y = 20,height = 30, width = 150)
         
         ##frame left

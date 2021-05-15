@@ -20,6 +20,7 @@ class donatur:
         self.nama = temp[0][0].split(" ")
 
         title=Label(self.window,text = "Selamat Datang " + self.nama[0],font=("times new roman",40,"bold"),bg = "green",fg = "white").place(x = 0, y = 0,relwidth = 1,height = 70)
+        btn_logout=Button(self.window,text="Logout",command=self.exit,font = ("times new roman",15,"bold"),bg="yellow",cursor="hand2").place(x=1700,y = 20,height = 30, width = 150)
 
         LeftMenu = Frame(self.window,bd=2,relief=RIDGE, bg="white")
         LeftMenu.place(x=0,y=70,width=200,height=900)
@@ -88,6 +89,9 @@ class donatur:
         chart1 = FigureCanvasTkAgg(figure3,self.Menu_Utama)
         chart1.get_tk_widget().place(x=300,y=500,width=500,height=500)
         ax3.set_title('Persentase Jenis Barang')
+
+    def exit(self):
+        self.window.destroy()
 
     
 

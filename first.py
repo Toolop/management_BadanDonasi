@@ -10,13 +10,15 @@ class Menu_awal:
         self.window.resizable (False,False)
         self.window.config(bg="white")
 
+
         #button
         title  = Label(self.window,text = "Menu Awal",font=("times new roman",40,"bold"),bg = "#010c48",fg = "white").place(x = 0, y = 0,relwidth = 1,height = 70)
         lbl_mn = Label(self.window,text = "Login Sebagai",font=("times new roman",15,"bold"),bg="white").place(x = 0, y = 70,relwidth = 1,height = 30)
-        
+
+
         Donatur = Button(self.window,text = "Donatur",command=self.donatur,bg="white",fg ="black",font=("times new roman",12,"bold"))
         Donatur.place(x=100,y=300)
-
+       
         bdn_aml = Button(self.window,text = "Badan Amal",command=self.Badan_amal,bg="white",fg ="black",font=("times new roman",12,"bold"))
         bdn_aml.place(x=500,y=300)
 
