@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 08, 2021 at 05:46 AM
+-- Generation Time: May 15, 2021 at 05:17 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `Donasi_kartika`
+-- Database: `Donasi`
 --
 
 -- --------------------------------------------------------
@@ -41,7 +41,11 @@ CREATE TABLE `Badan_amal` (
 
 INSERT INTO `Badan_amal` (`id_company`, `username`, `password`, `alamat`, `nama`) VALUES
 ('1', 'toolop', 'sdkartika22', 'jalan nusa bangsa', 'Donasi Kartika'),
-('2', 'armortitan', 'sdkartika22', 'jalan jalan', 'Donasi Saya');
+('2', 'armortitan', 'sdkartika22', 'jalan jalan', 'Donasi Saya'),
+('3', 'kartika', 'sdkartika22', 'jalan buntu', 'Donasi Kartika II'),
+('4', 'kitabisa', 'sdkartika22', 'jalan buntu', 'Donasi Kitabisa'),
+('5', 'hidayah123', 'sdkartika', 'jalan mangga ', 'Badan Hidayah'),
+('6', 'sejahterabanget', 'sdkartika22', 'jalan buntu', 'Badan Sejahtera');
 
 -- --------------------------------------------------------
 
@@ -51,8 +55,27 @@ INSERT INTO `Badan_amal` (`id_company`, `username`, `password`, `alamat`, `nama`
 
 CREATE TABLE `Barang` (
   `id_donasi` varchar(10) NOT NULL,
-  `jumlah` int(10) DEFAULT NULL
+  `jumlah` int(10) DEFAULT NULL,
+  `jenis` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Barang`
+--
+
+INSERT INTO `Barang` (`id_donasi`, `jumlah`, `jenis`) VALUES
+('10', 100, 'Buku'),
+('12', 50, 'Baju'),
+('13', 20, 'Kebutuhan Pokok'),
+('15', 15, 'Baju'),
+('16', 15, 'Buku'),
+('17', 20, 'Kebutuhan Pokok'),
+('18', 10, 'Baju'),
+('20', 10, 'Baju'),
+('4', 10, 'Baju'),
+('5', 10, 'Baju'),
+('7', 3, 'Buku'),
+('8', 3, 'Buku');
 
 -- --------------------------------------------------------
 
@@ -66,6 +89,32 @@ CREATE TABLE `Donasi` (
   `tgl_donasi` date DEFAULT NULL,
   `id_company` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Donasi`
+--
+
+INSERT INTO `Donasi` (`id_donatur`, `id_donasi`, `tgl_donasi`, `id_company`) VALUES
+('1', '1', '2021-05-10', '1'),
+('3', '10', '2021-05-12', '1'),
+('4', '11', '2021-05-14', '1'),
+('4', '12', '2021-05-14', '1'),
+('1', '13', '2021-05-15', '1'),
+('5', '14', '2021-05-15', '1'),
+('5', '15', '2021-05-15', '1'),
+('5', '16', '2021-05-15', '2'),
+('5', '17', '2021-05-15', '1'),
+('1', '18', '2021-05-15', '1'),
+('6', '19', '2021-05-15', '1'),
+('1', '2', '2021-05-10', '1'),
+('6', '20', '2021-05-15', '1'),
+('1', '3', '2021-05-10', '1'),
+('1', '4', '2021-05-10', '1'),
+('1', '5', '2021-05-10', '1'),
+('1', '6', '2021-05-12', '1'),
+('1', '7', '2021-05-12', '1'),
+('1', '8', '2021-05-12', '2'),
+('3', '9', '2021-05-12', '1');
 
 -- --------------------------------------------------------
 
@@ -88,19 +137,12 @@ CREATE TABLE `Donatur` (
 --
 
 INSERT INTO `Donatur` (`id_donatur`, `username`, `Password`, `nama`, `alamat`, `no_telepon`, `tipe`) VALUES
-('1', 'toolop', 'sdkartika22', 'Jalan nusa bangsa', 'rafi', '08123', 'Personal'),
-('2', 'laras23', 'sdkartika22', 'Jalan Buntu', 'Laras Nurul Aulia', '081540867030', 'Organisasi');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Jenis_Barang`
---
-
-CREATE TABLE `Jenis_Barang` (
-  `id_donasi` varchar(10) DEFAULT NULL,
-  `jenis` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+('1', 'toolop', 'sdkartika22', 'Rafi Arya Nugraha', 'Jalan Nusa Indah', '081540867030', 'Personal'),
+('2', 'laras', 'smanli', 'Laras Nurul', 'Jalan Buntu', '081540867080', 'Organisasi'),
+('3', 'kyurita', 'rafiarya', 'ita', 'jl nusa indah', '081394611264', 'Personal'),
+('4', 'bambang', 'smanlibengkulu', 'Bambang', 'jalan jalan ke tanah abang', '087557781234', 'Personal'),
+('5', 'jamalganteng', 'sdkartika22', 'Jamal', 'jl Nusa indah ', '081540867030', 'Personal'),
+('6', 'Jhonyganteng', 'sdkartika22', 'Jhony', 'Jalan Nusa Indah', '081540867030', 'Organisasi');
 
 -- --------------------------------------------------------
 
@@ -112,9 +154,20 @@ CREATE TABLE `Kotak_amal` (
   `id_kotak` varchar(10) NOT NULL,
   `id_company` varchar(10) DEFAULT NULL,
   `id_pegawai` varchar(6) DEFAULT NULL,
-  `alamat` varchar(30) DEFAULT NULL,
-  `jumlah_uang` int(15) DEFAULT NULL
+  `alamat` varchar(120) DEFAULT NULL,
+  `jumlah_uang` int(15) DEFAULT NULL,
+  `tgl_penarikan` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Kotak_amal`
+--
+
+INSERT INTO `Kotak_amal` (`id_kotak`, `id_company`, `id_pegawai`, `alamat`, `jumlah_uang`, `tgl_penarikan`) VALUES
+('1', '1', '111', 'jalan nusa indah', 110000, '2021-05-10'),
+('2', '1', '110', 'jalan Nusa Bangsa ', 10000, '2021-05-10'),
+('3', '1', '113', 'Masjid Baitul Rahman', 100000, '2021-05-15'),
+('4', '1', '113', 'Jalan rahmat', 90000, '2021-05-15');
 
 -- --------------------------------------------------------
 
@@ -135,9 +188,13 @@ CREATE TABLE `Pegawai` (
 --
 
 INSERT INTO `Pegawai` (`id_pegawai`, `nama`, `no_telepon`, `tgl_masuk`, `id_company`) VALUES
+('1', 'Jamal', '0874923847', '2012-12-12', '6'),
 ('110', 'Rafi Arya', '08123755778', '2018-12-23', '1'),
-('111', 'Laras', '081540867030', '2012-12-23', '1'),
-('112', 'Tiwi', '081234567', '2020-10-12', '1');
+('111', 'Laras Nurul', '081540867030', '2012-12-23', '1'),
+('112', 'Tiwi', '081234589', '2015-12-23', '1'),
+('113', 'Bamnbang', '0812345430', '2017-12-23', '1'),
+('114', 'Jarwo', '0812435430', '2017-12-10', '1'),
+('210', 'Randi Baraku', '08123456789', '2018-12-23', '2');
 
 -- --------------------------------------------------------
 
@@ -153,6 +210,16 @@ CREATE TABLE `Penerima` (
   `alamat` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `Penerima`
+--
+
+INSERT INTO `Penerima` (`id_pegawai`, `id_company`, `id_penerima`, `nama`, `alamat`) VALUES
+('110', '1', '1', 'Jamal', 'Jalan Saya'),
+('111', '1', '2', 'Bambang', 'Jalan Buntu'),
+('113', '1', '3', 'Masjid Al-iklas', 'jalan nusa bangsa'),
+('114', '1', '4', 'Panti Kartika', 'jalan kartika');
+
 -- --------------------------------------------------------
 
 --
@@ -161,8 +228,22 @@ CREATE TABLE `Penerima` (
 
 CREATE TABLE `Ponsel_penerima` (
   `id_penerima` varchar(10) DEFAULT NULL,
-  `nomor_hp` varchar(13) DEFAULT NULL
+  `id_nomor_hp` int(11) NOT NULL,
+  `nomor_hp` varchar(13) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Ponsel_penerima`
+--
+
+INSERT INTO `Ponsel_penerima` (`id_penerima`, `id_nomor_hp`, `nomor_hp`) VALUES
+('1', 1, '081243514'),
+('1', 2, '08294829'),
+('2', 3, '082948290'),
+('2', 4, '089428420'),
+('3', 5, '082134578239'),
+('4', 6, '0812345678'),
+('4', 7, '0988768327');
 
 -- --------------------------------------------------------
 
@@ -174,6 +255,20 @@ CREATE TABLE `Uang` (
   `id_donasi` varchar(10) NOT NULL,
   `jumlah_total` int(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `Uang`
+--
+
+INSERT INTO `Uang` (`id_donasi`, `jumlah_total`) VALUES
+('1', 1000),
+('11', 50000),
+('14', 100000),
+('19', 50000),
+('2', 10000),
+('3', 100000),
+('6', 50000),
+('9', 1000000000);
 
 --
 -- Indexes for dumped tables
@@ -206,12 +301,6 @@ ALTER TABLE `Donatur`
   ADD PRIMARY KEY (`id_donatur`);
 
 --
--- Indexes for table `Jenis_Barang`
---
-ALTER TABLE `Jenis_Barang`
-  ADD KEY `id_donasi` (`id_donasi`);
-
---
 -- Indexes for table `Kotak_amal`
 --
 ALTER TABLE `Kotak_amal`
@@ -238,6 +327,7 @@ ALTER TABLE `Penerima`
 -- Indexes for table `Ponsel_penerima`
 --
 ALTER TABLE `Ponsel_penerima`
+  ADD PRIMARY KEY (`id_nomor_hp`),
   ADD KEY `id_penerima` (`id_penerima`);
 
 --
@@ -262,12 +352,6 @@ ALTER TABLE `Barang`
 ALTER TABLE `Donasi`
   ADD CONSTRAINT `Donasi_ibfk_1` FOREIGN KEY (`id_donatur`) REFERENCES `Donatur` (`id_donatur`) ON UPDATE CASCADE,
   ADD CONSTRAINT `Donasi_ibfk_2` FOREIGN KEY (`id_company`) REFERENCES `Badan_amal` (`id_company`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `Jenis_Barang`
---
-ALTER TABLE `Jenis_Barang`
-  ADD CONSTRAINT `Jenis_Barang_ibfk_1` FOREIGN KEY (`id_donasi`) REFERENCES `Barang` (`id_donasi`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Kotak_amal`
