@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 15, 2021 at 05:17 PM
+-- Generation Time: May 16, 2021 at 06:34 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.1
 
@@ -72,6 +72,7 @@ INSERT INTO `Barang` (`id_donasi`, `jumlah`, `jenis`) VALUES
 ('17', 20, 'Kebutuhan Pokok'),
 ('18', 10, 'Baju'),
 ('20', 10, 'Baju'),
+('22', 10, 'Buku'),
 ('4', 10, 'Baju'),
 ('5', 10, 'Baju'),
 ('7', 3, 'Buku'),
@@ -108,6 +109,8 @@ INSERT INTO `Donasi` (`id_donatur`, `id_donasi`, `tgl_donasi`, `id_company`) VAL
 ('6', '19', '2021-05-15', '1'),
 ('1', '2', '2021-05-10', '1'),
 ('6', '20', '2021-05-15', '1'),
+('7', '21', '2021-05-16', '1'),
+('7', '22', '2021-05-16', '1'),
 ('1', '3', '2021-05-10', '1'),
 ('1', '4', '2021-05-10', '1'),
 ('1', '5', '2021-05-10', '1'),
@@ -142,7 +145,8 @@ INSERT INTO `Donatur` (`id_donatur`, `username`, `Password`, `nama`, `alamat`, `
 ('3', 'kyurita', 'rafiarya', 'ita', 'jl nusa indah', '081394611264', 'Personal'),
 ('4', 'bambang', 'smanlibengkulu', 'Bambang', 'jalan jalan ke tanah abang', '087557781234', 'Personal'),
 ('5', 'jamalganteng', 'sdkartika22', 'Jamal', 'jl Nusa indah ', '081540867030', 'Personal'),
-('6', 'Jhonyganteng', 'sdkartika22', 'Jhony', 'Jalan Nusa Indah', '081540867030', 'Organisasi');
+('6', 'Jhonyganteng', 'sdkartika22', 'Jhony', 'Jalan Nusa Indah', '081540867030', 'Organisasi'),
+('7', 'siapasaya', 'sdkartika22', 'Siapa', 'jalan jalan', '08123456789', 'Personal');
 
 -- --------------------------------------------------------
 
@@ -167,7 +171,7 @@ INSERT INTO `Kotak_amal` (`id_kotak`, `id_company`, `id_pegawai`, `alamat`, `jum
 ('1', '1', '111', 'jalan nusa indah', 110000, '2021-05-10'),
 ('2', '1', '110', 'jalan Nusa Bangsa ', 10000, '2021-05-10'),
 ('3', '1', '113', 'Masjid Baitul Rahman', 100000, '2021-05-15'),
-('4', '1', '113', 'Jalan rahmat', 90000, '2021-05-15');
+('4', '1', '112', 'Jalan rahmat', 90000, '2021-05-15');
 
 -- --------------------------------------------------------
 
@@ -210,16 +214,6 @@ CREATE TABLE `Penerima` (
   `alamat` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `Penerima`
---
-
-INSERT INTO `Penerima` (`id_pegawai`, `id_company`, `id_penerima`, `nama`, `alamat`) VALUES
-('110', '1', '1', 'Jamal', 'Jalan Saya'),
-('111', '1', '2', 'Bambang', 'Jalan Buntu'),
-('113', '1', '3', 'Masjid Al-iklas', 'jalan nusa bangsa'),
-('114', '1', '4', 'Panti Kartika', 'jalan kartika');
-
 -- --------------------------------------------------------
 
 --
@@ -227,23 +221,10 @@ INSERT INTO `Penerima` (`id_pegawai`, `id_company`, `id_penerima`, `nama`, `alam
 --
 
 CREATE TABLE `Ponsel_penerima` (
-  `id_penerima` varchar(10) DEFAULT NULL,
-  `id_nomor_hp` int(11) NOT NULL,
-  `nomor_hp` varchar(13) NOT NULL
+  `id_penerima` varchar(10) NOT NULL,
+  `nomor_hp1` varchar(13) NOT NULL,
+  `nomor_hp2` varchar(13) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `Ponsel_penerima`
---
-
-INSERT INTO `Ponsel_penerima` (`id_penerima`, `id_nomor_hp`, `nomor_hp`) VALUES
-('1', 1, '081243514'),
-('1', 2, '08294829'),
-('2', 3, '082948290'),
-('2', 4, '089428420'),
-('3', 5, '082134578239'),
-('4', 6, '0812345678'),
-('4', 7, '0988768327');
 
 -- --------------------------------------------------------
 
@@ -266,6 +247,7 @@ INSERT INTO `Uang` (`id_donasi`, `jumlah_total`) VALUES
 ('14', 100000),
 ('19', 50000),
 ('2', 10000),
+('21', 10000),
 ('3', 100000),
 ('6', 50000),
 ('9', 1000000000);
@@ -327,7 +309,6 @@ ALTER TABLE `Penerima`
 -- Indexes for table `Ponsel_penerima`
 --
 ALTER TABLE `Ponsel_penerima`
-  ADD PRIMARY KEY (`id_nomor_hp`),
   ADD KEY `id_penerima` (`id_penerima`);
 
 --
@@ -377,7 +358,7 @@ ALTER TABLE `Penerima`
 -- Constraints for table `Ponsel_penerima`
 --
 ALTER TABLE `Ponsel_penerima`
-  ADD CONSTRAINT `Ponsel_penerima_ibfk_1` FOREIGN KEY (`id_penerima`) REFERENCES `Penerima` (`id_penerima`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `Ponsel_penerima_ibfk_1` FOREIGN KEY (`id_penerima`) REFERENCES `Penerima` (`id_penerima`);
 
 --
 -- Constraints for table `Uang`

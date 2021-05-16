@@ -299,92 +299,102 @@ class Kotak_amal:
 
         self.show()
     
-    def Submit(self):   
-        if(self.var_idkotak.get() == ""):
-            messagebox.showwarning("Warning","Isi Semua Data!",parent=self.window)
+    def Submit(self):
+        if self.id_pegawai.get() == "" or self.nama_penerima.get() == "" or self.var_alamat.get() == "" or self.var_telp.get() == "":
+            messagebox.showwarning("warning","Isi data dengan lengkap")
         else :
-            if dbkotak.cekprimary(self.var_idkotak.get()):
-                messagebox.showerror("Error","ID Kotak sudah ada")
-            elif not dbpegawai.cekprimary(self.var_id_pegawai.get()):
-                messagebox.showerror("Error","ID Pegawai Tidak ada ada")
-            else :
-                dbkotak.insert(self.var_idkotak.get(),self.var_id_company,self.var_id_pegawai.get(),self.var_alamat.get(),self.var_jumlah.get(),self.date)
-                messagebox.showinfo("Info","Data berhasil dimasukkan")
-                self.show()
-                self.clear()
+            if len(self.nama_penerima.get()) > 20:
+                messagebox.showerror("Error","Nama Terlalu Panjang")
+            else : 
+                if dbpegawai.cekprimary(self.id_pegawai.get()):
+                    dbpenerima.insert(self.id_pegawai.get(),self.id_comp,self.nama_penerima.get(),self.var_alamat.get(),self.var_telp.get(),self.var_telp2.get())
+                    self.clear()
+                    messagebox.showinfo("Info","Data berhasil dimasukan")
+                    self.show()
+                    
+                else :
+                    messagebox.showwarning("warning","Id Pegawai Tidak Ada!")
 
+    def show(self):
+        getrow = dbpenerima.getdata(self.id_comp)
+        self.TabelPenerima.delete(*self.TabelPenerima.get_children())
+        for row in getrow:
+            self.TabelPenerima.insert('',END,values=row)
+    
     def clear(self):
-        self.var_idkotak.set("")
-        self.var_id_pegawai.set("")
-        self.var_alamat.set("")
-        self.var_jumlah.set("")
+        self.id_pegawai.set("") 
+        self.nama_penerima.set("") 
+        self.var_alamat.set("") 
+        self.var_telp.set("") 
+        self.var_telp2.set("") 
+
+    def get_data(self,ev):
+        f=self.TabelPenerima.focus()
+        content=(self.TabelPenerima.item(f))
+        row = content['values']
+        self.id_pegawai.set(dbpenerima.search_nama(row[1],self.id_comp))
+        self.nama_penerima.set(row[2])
+        self.var_alamat.set(row[3])
+        self.var_telp.set(str(row[4]))
+        self.var_telp2.set(str(row[5]))
     
     def Update(self):
-        if self.var_idkotak.get() == "":
-            messagebox.showwarning("Warning","Data Primary Harus diisi !",parent=self.window)
+        if(self.nama_penerima == ""):
+            messagebox.showwarning("Warning","Data belum diisi !",parent=self.window)
         else :
-            if not dbkotak.cekprimary(self.var_idkotak.get()):
-                messagebox.showerror("Error","ID Kotak belum ada")
+            self.id_penerima = dbpenerima.getprimary(self.nama_penerima.get())
+            if not dbpenerima.cekprimary(self.id_penerima):
+                messagebox.showerror("Error","ID Penerima belum ada")
             else :
-                dbkotak.update(self.var_idkotak.get(),self.var_id_pegawai.get(),self.var_alamat.get(),self.var_jumlah.get())
+                dbpenerima.update(self.id_penerima[0],self.id_pegawai.get(),self.id_comp,self.nama_penerima.get(),self.var_alamat.get(),self.var_telp.get(),self.var_telp2.get())
                 messagebox.showinfo("Info","Data berhasil diupdate")
                 self.show()
                 self.clear()
-                
+
     def Delete(self):
-        if not self.var_idkotak.get() == "":
-            if dbkotak.cekprimary(self.var_idkotak.get()):
-                pilih = messagebox.askyesno("Delete data", "Apakah Kamu yakin untuk menghapus data dengan id "+self.var_idkotak.get()+"?")
+        if(not self.nama_penerima.get() == ""):
+            self.id_penerima = dbpenerima.getprimary(self.nama_penerima.get())
+            if dbpenerima.cekprimary(self.id_penerima):
+                pilih = messagebox.askyesno("Delete data", "Apakah Kamu yakin untuk menghapus data "+self.nama_penerima.get()+"?")
                 if pilih:
-                    dbkotak.delete_data(self.var_idkotak.get())
+                    dbpenerima.delete(self.id_penerima)
                     self.show()
                     self.clear()
                 else:
                     pass
             else :
-                messagebox.showerror("Error","ID Kotak tidak ada")
+                messagebox.showerror("Error","ID Penerima belum ada")
         else : 
             messagebox.showwarning("Warning","Data belum diisi !",parent=self.window)
 
-    def show(self):
-        getrow = dbkotak.getdata(self.var_id_company)
-        self.TabelKotakAmal.delete(*self.TabelKotakAmal.get_children())
-        for row in getrow:
-            self.TabelKotakAmal.insert('',END,values=row)
-
     def getsearch(self):
-        if self.get_search.get() == "Select" or self.get_isi_search.get() == "":
+        if self.cmbox_search.get() == "Select" or self.var_search.get() == "":
             self.show()
 
-        elif self.get_search.get() =="Nama Pegawai":
-            getrow = dbkotak.getsearch(self.var_id_company,"nama",self.get_isi_search.get())
+        elif self.cmbox_search.get() =="Nama Pegawai":
+            getrow = dbpenerima.getsearch(self.id_comp,"Pegawai.nama",self.var_search.get())
             self.hasilsearch(getrow)
 
-        elif self.get_search.get() =="Id Kotak":
-            getrow = dbkotak.getsearch(self.var_id_company,"id_pegawai",self.get_isi_search.get())
+        elif self.cmbox_search.get() =="Nama Penerima":
+            getrow = dbpenerima.getsearch(self.id_comp,"Penerima.nama",self.var_search.get())
             self.hasilsearch(getrow)
 
-        elif self.get_search.get() == "Tanggal":
-            getrow = dbkotak.getsearch(self.var_id_company,"tgl_penarikan",self.get_isi_search.get())
+        elif self.cmbox_search.get() == "Alamat":
+            getrow = dbpenerima.getsearch(self.id_comp,"Penerima.alamat",self.var_search.get())
             self.hasilsearch(getrow)
         
-        elif self.get_search.get() == "Alamat":
-            getrow = dbkotak.getsearch(self.var_id_company,"alamat",self.get_isi_search.get())
+        elif self.cmbox_search.get() == "No Telepon":
+            getrow = dbpenerima.getsearchponsel(self.id_comp,"nomor_hp1",self.var_search.get(),"nomor_hp2")
+            self.hasilsearch(getrow)
+        
+        elif self.cmbox_search.get() == "Id Penerima":
+            getrow = dbpenerima.getsearch(self.id_comp,"id_penerima",self.var_search.get())
             self.hasilsearch(getrow)
             
     def hasilsearch(self,getrow):
-        self.TabelKotakAmal.delete(*self.TabelKotakAmal.get_children())
+        self.TabelPenerima.delete(*self.TabelPenerima.get_children())
         for row in getrow:
-            self.TabelKotakAmal.insert('',END,values=row)
-  
-    def get_data(self,ev):
-        f=self.TabelKotakAmal.focus()
-        content=(self.TabelKotakAmal.item(f))
-        row = content['values']
-        self.var_idkotak.set(row[0])
-        self.var_id_pegawai.set(row[1])
-        self.var_alamat.set(row[3])
-        self.var_jumlah.set(row[4])
+            self.TabelPenerima.insert('',END,values=row)
 
 class Penerima: 
 
@@ -727,7 +737,7 @@ class Donatur:
     def __init__(self,window,id_comp):
         self.window = window
         self.window.geometry("700x600+600+300")
-        self.window.title("Donasi")
+        self.window.title("Donatur")
         self.window.resizable (False,False)
         self.window.config(bg="white")
         self.var_search = StringVar()
