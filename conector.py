@@ -5,7 +5,7 @@ db = mysql.connector.connect(
   host="localhost",
   user="root",
   passwd="",
-  database = "Donasi_kartika"
+  database = "Donasi"
 )
 
 if db.is_connected():
