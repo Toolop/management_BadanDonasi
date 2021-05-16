@@ -361,7 +361,7 @@ class Kotak_amal:
             self.hasilsearch(getrow)
 
         elif self.get_search.get() =="Id Kotak":
-            getrow = dbkotak.getsearch(self.var_id_company,"id_pegawai",self.get_isi_search.get())
+            getrow = dbkotak.getsearch(self.var_id_company,"id_kotak",self.get_isi_search.get())
             self.hasilsearch(getrow)
 
         elif self.get_search.get() == "Tanggal":
@@ -429,7 +429,7 @@ class Penerima:
         lblnamapenerima = Label(inputframe,text = "ID Pegawai",bg="white").place(x = 10,y = 20)
         input_namapenerima = Entry(inputframe,textvariable=self.id_pegawai).place(x=120,y=20)
 
-        lbl_alamat = Label(inputframe,text = "Nama",bg="white").place(x = 10,y = 60)
+        lbl_alamat = Label(inputframe,text = "Nama Penerima",bg="white").place(x = 10,y = 60)
         input_alamat = Entry(inputframe,textvariable=self.nama_penerima).place(x=120,y=60)
 
         lbl_no_telepon = Label(inputframe,text = "Alamat",bg="white").place(x = 10,y = 100)
@@ -491,10 +491,14 @@ class Penerima:
             if len(self.nama_penerima.get()) > 20:
                 messagebox.showerror("Error","Nama Terlalu Panjang")
             else : 
-                dbpenerima.insert(self.id_pegawai.get(),self.id_comp,self.nama_penerima.get(),self.var_alamat.get(),self.var_telp.get(),self.var_telp2.get())
-                self.clear()
-                messagebox.showinfo("Info","Data berhasil dimasukan")
-                self.show()
+                if dbpegawai.cekprimary(self.id_pegawai.get()):
+                    dbpenerima.insert(self.id_pegawai.get(),self.id_comp,self.nama_penerima.get(),self.var_alamat.get(),self.var_telp.get(),self.var_telp2.get())
+                    self.clear()
+                    messagebox.showinfo("Info","Data berhasil dimasukan")
+                    self.show()
+                    
+                else :
+                    messagebox.showwarning("warning","Id Pegawai Tidak Ada!")
 
     def show(self):
         getrow = dbpenerima.getdata(self.id_comp)
@@ -516,8 +520,8 @@ class Penerima:
         self.id_pegawai.set(dbpenerima.search_nama(row[1],self.id_comp))
         self.nama_penerima.set(row[2])
         self.var_alamat.set(row[3])
-        self.var_telp.set("0"+str(row[4]))
-        self.var_telp2.set("0"+str(row[5]))
+        self.var_telp.set(str(row[4]))
+        self.var_telp2.set(str(row[5]))
     
     def Update(self):
         if(self.nama_penerima == ""):
@@ -565,7 +569,7 @@ class Penerima:
             self.hasilsearch(getrow)
         
         elif self.cmbox_search.get() == "No Telepon":
-            getrow = dbpenerima.getsearch(self.id_comp,"nomor_hp",self.var_search.get())
+            getrow = dbpenerima.getsearchponsel(self.id_comp,"nomor_hp1",self.var_search.get(),"nomor_hp2")
             self.hasilsearch(getrow)
         
         elif self.cmbox_search.get() == "Id Penerima":
@@ -727,7 +731,7 @@ class Donatur:
     def __init__(self,window,id_comp):
         self.window = window
         self.window.geometry("700x600+600+300")
-        self.window.title("Donasi")
+        self.window.title("Donatur")
         self.window.resizable (False,False)
         self.window.config(bg="white")
         self.var_search = StringVar()
