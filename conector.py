@@ -1,4 +1,4 @@
-import mysql.connector
+simport mysql.connector
 import time
 
 db = mysql.connector.connect(
@@ -265,11 +265,11 @@ class DatabasePenerima:
     print("berhasil")
   
   def insert_phone(id,telp1,telp2):
-    nomor1 = "0" + str(telp1)
+    nomor1 = str(telp1)
     nomor2 = str(telp2)
     cursor = db.cursor()
     sql = """insert into Ponsel_penerima (id_penerima,nomor_hp1,nomor_hp2) values (%s,%s,%s) """
-    val = (id,'0' + nomor1,nomor2)
+    val = (id,nomor1,nomor2)
     cursor.execute(sql,val)
     db.commit()
 
